@@ -2,7 +2,22 @@
 
 ## Python
 
+### Test
+
 ```bash
-cd dayXX
-python -m doctest part1.py part2.py
+cd day01
+```
+
+```bash
+python -m doctest part1.py
+```
+
+### Run
+
+```bash
+cd day01
+```
+
+```bash
+cat input1.txt | python part1.py
 ```
