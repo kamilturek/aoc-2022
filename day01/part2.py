@@ -9,7 +9,7 @@ def solve(input):
     200158
     """
     return sum(
-        sorted([sum(map(int, elf.splitlines())) for elf in input.read().split("\n\n")])[
+        sorted(sum(map(int, elf.splitlines())) for elf in input.read().split("\n\n"))[
             -3:
         ]
     )
