@@ -1,4 +1,3 @@
-import functools
 import string
 import sys
 
