@@ -53,9 +53,7 @@ def solve(input):
                 case "D":
                     head.y -= 1
 
-            for i, follower in enumerate(knots[1:], 1):
-                followed = knots[i - 1]
-
+            for follower, followed in zip(knots[1:], knots[:-1]):
                 if followed.xdist(follower) == 2 and followed.ydist(follower) == 2:
                     followed.xpull(follower)
                     followed.ypull(follower)
