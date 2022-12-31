@@ -34,6 +34,9 @@ def find_shortest_distance(matrix, start, end):
         visited.add(curr)
 
         for neighbour in [(cy - 1, cx), (cy + 1, cx), (cy, cx - 1), (cy, cx + 1)]:
+            if neighbour in visited:
+                continue
+
             ny, nx = neighbour
             if nx < 0 or ny < 0 or nx >= dim_x or ny >= dim_y:
                 continue
