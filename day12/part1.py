@@ -14,9 +14,8 @@ def get_elevation(matrix, y, x):
     return ord(ELEVATION_MAPPING.get(elevation, elevation))
 
 
-def find_shortest_distance(graph, start, end):
-    """Dijkstra's Algorithm"""
-
+def find_shortest_distance(matrix, start, end):
+    dim_y, dim_x = len(matrix), len(matrix[0])
     pq = []
     visited = set()
     costs = defaultdict(lambda: float("inf"))
@@ -25,18 +24,31 @@ def find_shortest_distance(graph, start, end):
     heapq.heappush(pq, (0, start))
 
     while pq:
-        _, node = heapq.heappop(pq)
+        _, curr = heapq.heappop(pq)
+        cy, cx = curr
 
-        if node in visited:
+        if curr == end:
+            break
+
+        if curr in visited:
             continue
 
-        visited.add(node)
+        visited.add(curr)
 
-        for neighbour in graph[node]:
+        for neighbour in [(cy - 1, cx), (cy + 1, cx), (cy, cx - 1), (cy, cx + 1)]:
+            ny, nx = neighbour
+            if nx < 0 or ny < 0 or nx >= dim_x or ny >= dim_y:
+                continue
+
+            celev = get_elevation(matrix, cy, cx)
+            nelev = get_elevation(matrix, ny, nx)
+            if nelev > celev + 1:
+                continue
+
             if neighbour in visited:
                 continue
 
-            cost = costs[node] + 1
+            cost = costs[curr] + 1
             if cost < costs[neighbour]:
                 costs[neighbour] = cost
                 heapq.heappush(pq, (cost, neighbour))
@@ -51,13 +63,7 @@ def solve(input):
     >>> solve(open('input1.txt'))
     412
     """
-
-    # Building graph and finding start & end
-    graph = defaultdict(list)
-
     matrix = input.read().strip().splitlines()
-    dim_y, dim_x = len(matrix), len(matrix[0])
-
     start = None
     end = None
 
@@ -68,23 +74,7 @@ def solve(input):
             if elem == "E":
                 end = y, x
 
-            neighbours = [(y - 1, x), (y + 1, x), (y, x - 1), (y, x + 1)]
-            neighbours = [
-                (neighbour_y, neighbour_x)
-                for neighbour_y, neighbour_x in neighbours
-                if neighbour_y >= 0
-                and neighbour_x >= 0
-                and neighbour_y < dim_y
-                and neighbour_x < dim_x
-            ]
-
-            for neighbour in neighbours:
-                current_elevation = get_elevation(matrix, y, x)
-                neighbour_elevation = get_elevation(matrix, *neighbour)
-                if neighbour_elevation <= current_elevation + 1:
-                    graph[y, x].append(neighbour)
-
-    return find_shortest_distance(graph, start, end)
+    return find_shortest_distance(matrix, start, end)
 
 
 if __name__ == "__main__":
