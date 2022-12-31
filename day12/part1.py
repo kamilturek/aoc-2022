@@ -18,17 +18,15 @@ def find_shortest_distance(matrix, start, end):
     dim_y, dim_x = len(matrix), len(matrix[0])
     pq = []
     visited = set()
-    costs = defaultdict(lambda: float("inf"))
 
-    costs[start] = 0
     heapq.heappush(pq, (0, start))
 
     while pq:
-        _, curr = heapq.heappop(pq)
+        cost, curr = heapq.heappop(pq)
         cy, cx = curr
 
         if curr == end:
-            break
+            return cost
 
         if curr in visited:
             continue
@@ -45,15 +43,9 @@ def find_shortest_distance(matrix, start, end):
             if nelev > celev + 1:
                 continue
 
-            if neighbour in visited:
-                continue
+            heapq.heappush(pq, (cost + 1, neighbour))
 
-            cost = costs[curr] + 1
-            if cost < costs[neighbour]:
-                costs[neighbour] = cost
-                heapq.heappush(pq, (cost, neighbour))
-
-    return costs[end]
+    return float("inf")
 
 
 def solve(input):
