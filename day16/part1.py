@@ -28,7 +28,7 @@ def solve(input):
         flows[valve] = int(match.group("rate"))
 
     # Reduce the graph by removing the nodes with rate of 0.
-    # Calculate distances between every pair of relevant vales.
+    # Calculate distances between every pair of relevant valves.
     for valve in tunnels:
         # AA has to stay as we'll start from it.
         if valve != "AA" and flows[valve] == 0:
